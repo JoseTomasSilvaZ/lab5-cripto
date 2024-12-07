@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  c1:
+    build:
+      context: .
+      dockerfile: Dockerfile.C1
+    container_name: C1
+    tty: true
+    networks:
+      - ssh_net
+
+  c2:
+    build:
+      context: .
+      dockerfile: Dockerfile.C2
+    container_name: C2
+    tty: true
+    networks:
+      - ssh_net
+
+  c3:
+    build:
+      context: .
+      dockerfile: Dockerfile.C3
+    container_name: C3
+    tty: true
+    networks:
+      - ssh_net
+
+  c4_s1:
+    build:
+      context: .
+      dockerfile: Dockerfile.C4
+    container_name: C4_S1
+    ports:
+      - "2222:22"
+    tty: true
+    networks:
+      - ssh_net
+
+networks:
+  ssh_net:
+    driver: bridge
