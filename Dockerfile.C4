@@ -1,0 +1,19 @@
+FROM ubuntu:22.10
+
+RUN echo "deb http://old-releases.ubuntu.com/ubuntu/ kinetic main restricted universe multiverse" > /etc/apt/sources.list && \
+    echo "deb http://old-releases.ubuntu.com/ubuntu/ kinetic-updates main restricted universe multiverse" >> /etc/apt/sources.list && \
+    echo "deb http://old-releases.ubuntu.com/ubuntu/ kinetic-backports main restricted universe multiverse" >> /etc/apt/sources.list && \
+    echo "deb http://old-releases.ubuntu.com/ubuntu/ kinetic-security main restricted universe multiverse" >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends openssh-client openssh-server ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configurar SSH:
+RUN [ -d /var/run/sshd ] || mkdir /var/run/sshd && \
+    echo 'root:123' | chpasswd && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    useradd -m -s /bin/bash prueba && echo "prueba:prueba" | chpasswd
+
+EXPOSE 22
+CMD ["/usr/sbin/sshd","-D"]

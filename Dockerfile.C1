@@ -1,0 +1,9 @@
+FROM ubuntu:16.10
+RUN echo "deb http://old-releases.ubuntu.com/ubuntu/ yakkety main restricted universe multiverse" > /etc/apt/sources.list && \
+    echo "deb http://old-releases.ubuntu.com/ubuntu/ yakkety-updates main restricted universe multiverse" >> /etc/apt/sources.list && \
+    echo "deb http://old-releases.ubuntu.com/ubuntu/ yakkety-backports main restricted universe multiverse" >> /etc/apt/sources.list && \
+    echo "deb http://old-releases.ubuntu.com/ubuntu/ yakkety-security main restricted universe multiverse" >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends openssh-client ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
+CMD ["/bin/bash"]
